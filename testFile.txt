@@ -1,8 +1,0 @@
-% this is a comment
-int a 3
-int b 6
-
-a * b
-
-print a
-print "hello world"
