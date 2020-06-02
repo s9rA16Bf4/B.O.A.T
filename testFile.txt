@@ -1,0 +1,8 @@
+% this is a comment
+a = 3
+b = 6
+
+b / a
+
+print b
+print a
