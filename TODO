@@ -1,7 +1,0 @@
-#1 Fix so that you can print messages that contains spaces, when they are encapsulated within " ". Most likely something to-do with the split function
-#2 Modulus
-#3 Division, fix so that it actually works properly
-#4 Print both a string and the content of a variable on one line?
-#5 Fix a struct to represent a variable
-#6 Functions
-#7 Live enviroment
