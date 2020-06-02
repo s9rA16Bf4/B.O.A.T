@@ -1,4 +1,5 @@
 % this is a comment
+<<<<<<< HEAD
 int a 3
 int b 6
 
@@ -6,3 +7,12 @@ a * b
 
 print a
 print "hello world"
+=======
+a = 3
+b = 6
+
+b / a
+
+print b
+print a
+>>>>>>> f84df6c291fbe1b19617fe6f16e36c64afd2e6c3
