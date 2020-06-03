@@ -31,10 +31,10 @@ print /c % 4
 b + c
 print /b % 6
 
-d = 2
+int d 2
 a - d
 print /a % 1
 
 print hello world % prints "hello world"
-print a has the value /a % a has the value 3
+print a has the value /a % a has the value 1
 ```
