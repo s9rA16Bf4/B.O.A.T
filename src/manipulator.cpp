@@ -9,123 +9,118 @@ bool manipulator::process(std::vector<std::string> parsedValues){
     std::vector<std::string> splitLine = fP.split(parsedValues[y], " ");
     for (unsigned int i = 0; i < splitLine.size(); i++){
 
-      if (splitLine[i] == "string" || splitLine[i] == "int"){ // new variable declarition
-        variable *newVar = new variable();
-        newVar->name = splitLine[i+1];
-        newVar->value = splitLine[i+2];
-        newVar->type = splitLine[i];
+      if (splitLine[i] != "%"){ // ignore the line if its a comment
+        if (splitLine[i] == "string" || splitLine[i] == "int"){ // new variable declarition
+          variable *newVar = new variable();
+          newVar->name = splitLine[i+1];
+          newVar->value = splitLine[i+2];
+          newVar->type = splitLine[i];
 
-        variables.push_back(newVar);
+          variables.push_back(newVar);
 
-      }else if(splitLine[i] == "print"){ // Print a message
-        for (unsigned int i = 1; i < splitLine.size(); i++){
-          toReturn = this->print(splitLine[i], false);
-          toReturn = this->print(" ", false);
+        }else if(splitLine[i] == "print" || splitLine[i] == "printnl"){ // Print a message
+          bool newLine = false;
+          if (splitLine[i] == "printnl"){ newLine = true; }
 
-        }
-        this->print("\n", false);
-
-      }else if(splitLine[i] == "printnl"){
-        for (unsigned int i = 1; i < splitLine.size(); i++){
-          toReturn = this->print(splitLine[i], true);
-          toReturn = this->print(" ", true);
-
-        }
-        this->print("\n", false);
-
-
-      }else if(splitLine[i] == "cits"){
-        bool result = bif.convertIntToString(splitLine[i+1]);
-        toReturn = result;
-      }
-
-      else if (splitLine[i] == "def"){ // new function!
-        function *newFunc = new function();
-        newFunc->name = splitLine[i+1];
-        for (unsigned int x = i+2; x < splitLine.size(); x++){
-          newFunc->funcGuts.push_back(splitLine[x]);
-        }
-        functions.push_back(newFunc);
-        break;
-      }
-
-      else if (splitLine[i] == "+" || splitLine[i] == "-" || splitLine[i] == "*" || splitLine[i] == "/" || splitLine[i] == "%"){
-        variable *A = this->find(splitLine[i-1]); // Find our variables
-        variable *B = this->find(splitLine[i+1]);
-
-        if (!A || !B){ std::cerr << "Error: Undeclared variable [" << ((!A)? splitLine[i-1]:splitLine[i+1]) << "]" << std::endl;}
-        else if (A->type != B->type){std::cerr << "Error: Variables [" << A->name << "] and [" << B->name << "] are not of the same type" << std::endl; }
-
-        else if (splitLine[i] == "+"){
-          if (A->type == "int"){
-            A->value = std::to_string(std::stoi(A->value) + std::stoi(B->value)); // int add
-            toReturn = true;
-          }else{
-            A->value +=  B->value; // string add
-            toReturn = true;
+          for (unsigned int i = 1; i < splitLine.size(); i++){
+            toReturn = this->print(splitLine[i], newLine);
+            toReturn = this->print(" ", newLine);
           }
 
-        }else if (splitLine[i] == "-"){
-          if (A->type == "int"){
-            A->value = std::to_string(std::stoi(A->value) - std::stoi(B->value)); // sub
-            toReturn = true;
-          }
+          this->print("\n", newLine);
 
-        }else if (splitLine[i] == "*"){
-          if (A->type == "int"){
-            A->value = std::to_string(std::stoi(A->value) * std::stoi(B->value)); // mult
-            toReturn = true;
-          }
+        }else if(splitLine[i] == "cits"){ // convert a int to a string
+          bool result = bif.convertIntToString(splitLine[i+1]);
+          toReturn = result;
 
-        }else if (splitLine[i] == "/"){
-          if (A->type == "int"){
-            A->value = std::to_string(std::stof(A->value) / std::stof(B->value)); // divide
-            toReturn = true;
+        }else if (splitLine[i] == "def"){ // new function!
+          function *newFunc = new function();
+          newFunc->name = splitLine[i+1];
+          for (unsigned int x = i+2; x < splitLine.size(); x++){
+            newFunc->funcGuts.push_back(splitLine[x]);
           }
-        }else if (splitLine[i] == "%"){
-          if (A->type == "int"){
-            A->value = std::to_string(std::stoi(A->value) % std::stoi(B->value)); // modulos
-            toReturn = true;
-          }
+          functions.push_back(newFunc);
+          break;
         }
 
-        else{ std::cerr << "Error: Unknown operation [" << splitLine[i] << "]" << std::endl; }
+        else if (splitLine[i] == "+" || splitLine[i] == "-" || splitLine[i] == "*" || splitLine[i] == "/" || splitLine[i] == "//"){
+          variable *A = this->find(splitLine[i-1]); // Find our variables
+          variable *B = this->find(splitLine[i+1]);
 
-      }else if (splitLine[i] == "include"){
-        if (std::filesystem::exists(splitLine[i+1])){
-          std::ifstream openFile(splitLine[i+1]);
-          std::string line;
-          std::vector<std::string> tempVector;
+          if (!A || !B){ std::cerr << "Error: Undeclared variable [" << ((!A)? splitLine[i-1]:splitLine[i+1]) << "]" << std::endl;}
+          else if (A->type != B->type){std::cerr << "Error: Variables [" << A->name << "] and [" << B->name << "] are not of the same type" << std::endl; }
 
-          for (unsigned int x = y+1; x < parsedValues.size(); x++){ tempVector.push_back(parsedValues[x]); } // Remember our old lines
+          else if (splitLine[i] == "+"){
+            if (A->type == "int"){
+              A->value = std::to_string(std::stoi(A->value) + std::stoi(B->value)); // int add
+              toReturn = true;
+            }else{
+              A->value +=  B->value; // string add
+              toReturn = true;
+            }
 
-          parsedValues.resize(y); // Shrink our vector
-          parsedValues.shrink_to_fit(); // resize
+          }else if (splitLine[i] == "-"){
+            if (A->type == "int"){
+              A->value = std::to_string(std::stoi(A->value) - std::stoi(B->value)); // sub
+              toReturn = true;
+            }
 
-          while(std::getline(openFile, line)){ parsedValues.push_back(line); } // Insert the new lines
+          }else if (splitLine[i] == "*"){
+            if (A->type == "int"){
+              A->value = std::to_string(std::stoi(A->value) * std::stoi(B->value)); // mult
+              toReturn = true;
+            }
 
-          for(std::string oldLines:tempVector){ parsedValues.push_back(oldLines); } // Insert the old lines
+          }else if (splitLine[i] == "/"){
+            if (A->type == "int"){
+              A->value = std::to_string(std::stof(A->value) / std::stof(B->value)); // divide
+              toReturn = true;
+            }
 
-          y = 0; // Reset
+          }else if (splitLine[i] == "//"){
+            if (A->type == "int"){
+              A->value = std::to_string(std::stoi(A->value) % std::stoi(B->value)); // modulos
+              toReturn = true;
+            }
 
-        }else{ std::cerr << "Error: File [" << splitLine[i+1] << "] does not exist" << std::endl; }
+          }else{ std::cerr << "Error: Unknown operator [" << splitLine[i] << "]" << std::endl; }
 
-      }else{ // might it perhaps be a func???
-        for (function* funcs:functions){
-          if (funcs->name == splitLine[i]){
+        }else if (splitLine[i] == "include"){
+          if (std::filesystem::exists(splitLine[i+1])){
+            std::ifstream openFile(splitLine[i+1]);
+            std::string line;
             std::vector<std::string> tempVector;
+
             for (unsigned int x = y+1; x < parsedValues.size(); x++){ tempVector.push_back(parsedValues[x]); } // Remember our old lines
 
             parsedValues.resize(y); // Shrink our vector
             parsedValues.shrink_to_fit(); // resize
 
-            std::string functionLine = "";
-            for(std::string newLine:funcs->funcGuts){ functionLine += newLine + " ";} // Create the function line from its guts
-            parsedValues.push_back(functionLine);
+            while(std::getline(openFile, line)){ parsedValues.push_back(line); } // Insert the new lines
 
             for(std::string oldLines:tempVector){ parsedValues.push_back(oldLines); } // Insert the old lines
 
-            y--; // Jump one line up so that we can read our newly inserted function
+            y = 0; // Reset
+
+          }else{ std::cerr << "Error: File [" << splitLine[i+1] << "] does not exist" << std::endl; }
+
+        }else{ // might it perhaps be a func???
+          for (function* funcs:functions){
+            if (funcs->name == splitLine[i]){
+              std::vector<std::string> tempVector;
+              for (unsigned int x = y+1; x < parsedValues.size(); x++){ tempVector.push_back(parsedValues[x]); } // Remember our old lines
+
+              parsedValues.resize(y); // Shrink our vector
+              parsedValues.shrink_to_fit(); // resize
+
+              std::string functionLine = "";
+              for(std::string newLine:funcs->funcGuts){ functionLine += newLine + " ";} // Create the function line from its guts
+              parsedValues.push_back(functionLine);
+
+              for(std::string oldLines:tempVector){ parsedValues.push_back(oldLines); } // Insert the old lines
+
+              y--; // Jump one line up so that we can read our newly inserted function
+            }
           }
         }
       }
@@ -156,12 +151,11 @@ bool manipulator::print(std::string string, bool newline){ // Prints the content
 
 variable* manipulator::find(std::string varName){ // Finds the variable assocciated with varName
   variable *toReturn = nullptr;
-
   for (variable *entry:variables){
     if (entry->name == varName){
       toReturn = entry;
       break;
     }
   }
-    return toReturn;
+  return toReturn;
 }
