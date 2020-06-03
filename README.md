@@ -1,6 +1,7 @@
 # B(ored) O(n) A T(rain)
 
-I would like to note that this is not by any means a serious project. It's just something i've wanted to do for a while
+I would like to note that this is not by any means a serious project. It's just something i've wanted to do for a while</br>
+and that's why the code is awful in multiple areas.
 
 ### Syntaxes ###
 ``` int, string``` - Variable declaration</br>
@@ -30,10 +31,10 @@ print /c % 4
 b + c
 print /b % 6
 
-d = 2
+int d 2
 a - d
 print /a % 1
 
 print hello world % prints "hello world"
-print a has the value /a % a has the value 3
+print a has the value /a % a has the value 1
 ```
