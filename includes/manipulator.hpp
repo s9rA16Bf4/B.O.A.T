@@ -16,7 +16,13 @@ struct variable{
   std::string type;
 };
 
+struct function{
+  std::string name;
+  std::vector<std::string> funcGuts;
+};
+
 static std::vector<variable*> variables;
+static std::vector<function*> functions;
 
 class manipulator{
 

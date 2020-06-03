@@ -8,6 +8,7 @@ bool manipulator::process(std::vector<std::string> parsedValues){
   for (unsigned int y = 0; y < parsedValues.size(); y++){
     std::vector<std::string> splitLine = fP.split(parsedValues[y], " ");
     for (unsigned int i = 0; i < splitLine.size(); i++){
+
       if (splitLine[i] == "string" || splitLine[i] == "int"){ // new variable declarition
         variable *newVar = new variable();
         newVar->name = splitLine[i+1];
@@ -36,6 +37,16 @@ bool manipulator::process(std::vector<std::string> parsedValues){
       }else if(splitLine[i] == "cits"){
         bool result = bif.convertIntToString(splitLine[i+1]);
         toReturn = result;
+      }
+
+      else if (splitLine[i] == "def"){ // new function!
+        function *newFunc = new function();
+        newFunc->name = splitLine[i+1];
+        for (unsigned int x = i+2; x < splitLine.size(); x++){
+          newFunc->funcGuts.push_back(splitLine[x]);
+        }
+        functions.push_back(newFunc);
+        break;
       }
 
       else if (splitLine[i] == "+" || splitLine[i] == "-" || splitLine[i] == "*" || splitLine[i] == "/" || splitLine[i] == "%"){
@@ -78,7 +89,6 @@ bool manipulator::process(std::vector<std::string> parsedValues){
           }
         }
 
-
         else{ std::cerr << "Error: Unknown operation [" << splitLine[i] << "]" << std::endl; }
 
       }else if (splitLine[i] == "include"){
@@ -90,15 +100,34 @@ bool manipulator::process(std::vector<std::string> parsedValues){
           for (unsigned int x = y+1; x < parsedValues.size(); x++){ tempVector.push_back(parsedValues[x]); } // Remember our old lines
 
           parsedValues.resize(y); // Shrink our vector
-          parsedValues.shrink_to_fit();
+          parsedValues.shrink_to_fit(); // resize
 
           while(std::getline(openFile, line)){ parsedValues.push_back(line); } // Insert the new lines
 
-          for(std::string test:tempVector){ parsedValues.push_back(test); } // Insert the old lines
+          for(std::string oldLines:tempVector){ parsedValues.push_back(oldLines); } // Insert the old lines
 
           y = 0; // Reset
 
         }else{ std::cerr << "Error: File [" << splitLine[i+1] << "] does not exist" << std::endl; }
+
+      }else{ // might it perhaps be a func???
+        for (function* funcs:functions){
+          if (funcs->name == splitLine[i]){
+            std::vector<std::string> tempVector;
+            for (unsigned int x = y+1; x < parsedValues.size(); x++){ tempVector.push_back(parsedValues[x]); } // Remember our old lines
+
+            parsedValues.resize(y); // Shrink our vector
+            parsedValues.shrink_to_fit(); // resize
+
+            std::string functionLine = "";
+            for(std::string newLine:funcs->funcGuts){ functionLine += newLine + " ";} // Create the function line from its guts
+            parsedValues.push_back(functionLine);
+
+            for(std::string oldLines:tempVector){ parsedValues.push_back(oldLines); } // Insert the old lines
+
+            y--; // Jump one line up so that we can read our newly inserted function
+          }
+        }
       }
     }
   }
@@ -134,6 +163,5 @@ variable* manipulator::find(std::string varName){ // Finds the variable assoccia
       break;
     }
   }
-
     return toReturn;
 }
