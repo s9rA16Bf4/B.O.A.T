@@ -11,10 +11,12 @@ and that's why the code is awful in multiple areas.
 ```A - B``` - Subtraction of two variables A and B</br>
 ```A * B```  - Multiplication of two variables A and B</br>
 ```A / B``` - Division of two variables A and B</br>
-```A % B```- Modular of two variables A and B</br>
+```A // B```- Modular of two variables A and B</br>
 ```include fileName``` - Imports the code from the file "fileName"</br>
 ```cits variable```- Converts a variable type from int to string</br>
-```def funcName whatTheFuncDoes``` - Creates a function with the name funcName, can be used later one by calling upon it.</br>
+```def funcName whatTheFuncDoes``` - Creates a function with the name funcName, can be used later one by calling upon it.
+</br>
+``` % text ``` - This is how you represent a comment </br>
 
 ### Code example ###
 ```
