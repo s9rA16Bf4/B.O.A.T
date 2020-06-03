@@ -14,6 +14,7 @@ and that's why the code is awful in multiple areas.
 ```A % B```- Modular of two variables A and B</br>
 ```include fileName``` - Imports the code from the file "fileName"</br>
 ```cits variable```- Converts a variable type from int to string</br>
+```def funcName whatTheFuncDoes``` - Creates a function with the name funcName, can be used later one by calling upon it.</br>
 
 ### Code example ###
 ```
@@ -37,4 +38,11 @@ print /a % 1
 
 print hello world % prints "hello world"
 print a has the value /a % a has the value 1
+
+def sub a - b % important that a and b both have been declared before!
+sub % calls upon the function
+print /a % -1
+
+% You can even chainlink commands within a function
+def subAdd a - b b + a % This will first subtract b from a and then add a to b
 ```
