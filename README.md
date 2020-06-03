@@ -17,6 +17,7 @@ and that's why the code is awful in multiple areas.
 ```def funcName whatTheFuncDoes``` - Creates a function with the name funcName, can be used later one by calling upon it.
 </br>
 ``` % text ``` - This is how you represent a comment </br>
+```upd A B ``` - Updates variables A values with B's </br>
 
 ### Code example ###
 ```
