@@ -55,3 +55,6 @@ def subAdd a - b b + a % This will first subtract b from a and then add a to b
 ```
 ```(4)``` - Index on which row the error occurred on</br>
 ```Error: Variable A has already been declared``` - The error message
+
+</br>If there is any issue, open up a ticket and I will take a look at it
+
