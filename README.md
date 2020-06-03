@@ -48,3 +48,9 @@ print /a % -1
 % You can even chainlink commands within a function
 def subAdd a - b b + a % This will first subtract b from a and then add a to b
 ```
+### Error example & explanation ###
+```
+(4) Error: Variable A has already been declared
+```
+```(4)``` - Index on which row the error occurred on</br>
+```Error: Variable A has already been declared``` - The error message
