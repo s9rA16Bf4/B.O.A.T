@@ -3,44 +3,64 @@
 bool manipulator::process(std::vector<std::string> parsedValues){
   bool toReturn = false;
   file fP;
+  builtInFunc bif;
 
   for (std::string entry:parsedValues){
     std::vector<std::string> splitLine = fP.split(entry, " ");
     for (unsigned int i = 0; i < splitLine.size(); i++){
 
-      if (splitLine[i] == "string" || splitLine[i] == "int" || splitLine[i] == "char"){ // new variable declarition
+      if (splitLine[i] == "string" || splitLine[i] == "int"){ // new variable declarition
         variable *newVar = new variable();
         newVar->name = splitLine[i+1];
         newVar->value = splitLine[i+2];
         newVar->type = splitLine[i];
 
-        this->variables.push_back(newVar);
+        variables.push_back(newVar);
 
       }else if (splitLine[i] == "def"){ // new function declarition
         function *newFunc = new function();
         //newFunc->functionName =
       }else if(splitLine[i] == "print"){ // Print a message
-        bool result = this->print(splitLine[i+1]); // Print the messag
+        bool result = this->print(splitLine[i+1]); // Print the message
+        toReturn = result;
+      }else if(splitLine[i] == "cits"){
+        bool result = bif.convertIntToString(splitLine[i+1]);
         toReturn = result;
       }
 
       else if (splitLine[i] == "+" || splitLine[i] == "-" || splitLine[i] == "*" || splitLine[i] == "/"){
-        variable *A = this->find(splitLine[i-1]);
+        variable *A = this->find(splitLine[i-1]); // Find our variables
         variable *B = this->find(splitLine[i+1]);
+
         if (!A || !B){ std::cerr << "Error: Undeclared variable [" << ((!A)? splitLine[i-1]:splitLine[i+1]) << "]" << std::endl;}
         else if (A->type != B->type){std::cerr << "Error: Variables [" << A->name << "] and [" << B->name << "] are not of the same type" << std::endl; }
+
         else if (splitLine[i] == "+"){
+          if (A->type == "int"){
             A->value = std::to_string(std::stoi(A->value) + std::stoi(B->value)); // add
             toReturn = true;
+          }else{
+            A->value +=  B->value; // add
+            toReturn = true;
+          }
+
         }else if (splitLine[i] == "-"){
-          A->value = std::to_string(std::stoi(A->value) - std::stoi(B->value)); // sub
-          toReturn = true;
+          if (A->type == "int"){
+            A->value = std::to_string(std::stoi(A->value) - std::stoi(B->value)); // sub
+            toReturn = true;
+          }
+
         }else if (splitLine[i] == "*"){
-          A->value = std::to_string(std::stoi(A->value) * std::stoi(B->value)); // mult
-          toReturn = true;
+          if (A->type == "int"){
+            A->value = std::to_string(std::stoi(A->value) * std::stoi(B->value)); // mult
+            toReturn = true;
+          }
+          
         }else if (splitLine[i] == "/"){
-          A->value = std::to_string(std::stoi(A->value) / std::stoi(B->value)); // divide
-          toReturn = true;
+          if (A->type == "int"){
+            A->value = std::to_string(std::stoi(A->value) / std::stoi(B->value)); // divide
+            toReturn = true;
+          }
         }
 
         else{ std::cerr << "Error: Unknown operation [" << splitLine[i] << "]" << std::endl; }
@@ -64,7 +84,7 @@ bool manipulator::print(std::string variableName){ // Prints the contents of a v
 variable* manipulator::find(std::string varName){ // Finds the variable assocciated with varName
   variable *toReturn = nullptr;
 
-  for (variable *entry:this->variables){
+  for (variable *entry:variables){
     if (entry->name == varName){
       toReturn = entry;
       break;
