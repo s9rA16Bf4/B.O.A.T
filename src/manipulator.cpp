@@ -111,7 +111,7 @@ bool manipulator::print(std::string string, bool newline){ // Prints the content
     string = string.erase(0, 1);
     variable *A = this->find(string);
     if (!A){
-      std::cout << "Error: Undeclared variable" << std::endl;
+      std::cout << "Error: Undeclared variable [" << string << "]"<< std::endl;
     }else{
       if (newline){ std::cout << A->value << std::endl;}
       else{std::cout << A->value;}
