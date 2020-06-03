@@ -11,12 +11,16 @@ bool manipulator::process(std::vector<std::string> parsedValues){
 
       if (splitLine[i] != "%"){ // ignore the line if its a comment
         if (splitLine[i] == "string" || splitLine[i] == "int"){ // new variable declarition
-          variable *newVar = new variable();
-          newVar->name = splitLine[i+1];
-          newVar->value = splitLine[i+2];
-          newVar->type = splitLine[i];
+          variable *A = this->find(splitLine[i+1]);
+          if (!A){
+            variable *newVar = new variable();
+            newVar->name = splitLine[i+1];
+            newVar->value = splitLine[i+2];
+            newVar->type = splitLine[i];
 
-          variables.push_back(newVar);
+            variables.push_back(newVar);
+          }else{ std::cerr << "("<< y+1 <<") Error: variable [" << splitLine[i+1] << "] has already been declared" << std::endl; }
+
 
         }else if(splitLine[i] == "print" || splitLine[i] == "printnl"){ // Print a message
           bool newLine = false;
@@ -47,8 +51,8 @@ bool manipulator::process(std::vector<std::string> parsedValues){
           variable *A = this->find(splitLine[i-1]); // Find our variables
           variable *B = this->find(splitLine[i+1]);
 
-          if (!A || !B){ std::cerr << "Error: Undeclared variable [" << ((!A)? splitLine[i-1]:splitLine[i+1]) << "]" << std::endl;}
-          else if (A->type != B->type){std::cerr << "Error: Variables [" << A->name << "] and [" << B->name << "] are not of the same type" << std::endl; }
+          if (!A || !B){ std::cerr << "("<< y+1 <<") Error: Undeclared variable [" << ((!A)? splitLine[i-1]:splitLine[i+1]) << "]" << std::endl;}
+          else if (A->type != B->type){std::cerr << "("<< y+1 <<") Error: Variables [" << A->name << "] and [" << B->name << "] are not of the same type" << std::endl; }
 
           else if (splitLine[i] == "+"){
             if (A->type == "int"){
@@ -83,7 +87,7 @@ bool manipulator::process(std::vector<std::string> parsedValues){
               toReturn = true;
             }
 
-          }else{ std::cerr << "Error: Unknown operator [" << splitLine[i] << "]" << std::endl; }
+          }else{ std::cerr << "("<< y+1 <<") Error: Unknown operator [" << splitLine[i] << "]" << std::endl; }
 
         }else if (splitLine[i] == "include"){
           if (std::filesystem::exists(splitLine[i+1])){
@@ -98,11 +102,11 @@ bool manipulator::process(std::vector<std::string> parsedValues){
 
             while(std::getline(openFile, line)){ parsedValues.push_back(line); } // Insert the new lines
 
-            for(std::string oldLines:tempVector){ parsedValues.push_back(oldLines); } // Insert the old lines
+            for(std::string oldLines:tempVector){parsedValues.push_back(oldLines); } // Insert the old lines
 
-            y = 0; // Reset
+            y--; // Jump one line up so that we can read our newly inserted values
 
-          }else{ std::cerr << "Error: File [" << splitLine[i+1] << "] does not exist" << std::endl; }
+          }else{ std::cerr << "("<< y+1 <<") Error: File [" << splitLine[i+1] << "] does not exist" << std::endl; }
 
         }else{ // might it perhaps be a func???
           for (function* funcs:functions){
