@@ -1,7 +1,7 @@
 COMPILER := g++
 LIB := includes/
 SRC := src/
-FLAGS := -g3
+FLAGS := --std=c++17
 BIN := boat
 RM := rm
 

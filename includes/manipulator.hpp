@@ -3,6 +3,8 @@
 
 #include <string>
 #include <vector>
+#include <filesystem>
+
 #include "fileParser.hpp"
 #include "builtInFunc.hpp"
 
@@ -14,19 +16,13 @@ struct variable{
   std::string type;
 };
 
-struct function{
-  std::string functionName;
-  std::string functionReturnType;
-};
-
 static std::vector<variable*> variables;
-static std::vector<function*> functions;
 
 class manipulator{
 
 public:
   bool process(std::vector<std::string> parsedValues);
-  bool print(std::string variableName);
+  bool print(std::string variableName, bool newline);
   variable* find(std::string varName);
 };
 
