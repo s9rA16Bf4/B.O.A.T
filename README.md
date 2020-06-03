@@ -1,6 +1,7 @@
 # B(ored) O(n) A T(rain)
 
-I would like to note that this is not by any means a serious project. It's just something i've wanted to do for a while
+I would like to note that this is not by any means a serious project. It's just something i've wanted to do for a while</br>
+and that's why the code is awful in multiple areas.
 
 ### Syntaxes ###
 ``` int, string``` - Variable declaration</br>
