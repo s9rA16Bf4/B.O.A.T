@@ -19,12 +19,16 @@ bool manipulator::process(std::vector<std::string> parsedValues){
       }else if(splitLine[i] == "print"){ // Print a message
         for (unsigned int i = 1; i < splitLine.size(); i++){
           toReturn = this->print(splitLine[i], false);
+          toReturn = this->print(" ", false);
+
         }
         this->print("\n", false);
 
       }else if(splitLine[i] == "printnl"){
         for (unsigned int i = 1; i < splitLine.size(); i++){
           toReturn = this->print(splitLine[i], true);
+          toReturn = this->print(" ", true);
+
         }
         this->print("\n", false);
 
