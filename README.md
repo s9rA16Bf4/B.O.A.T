@@ -23,7 +23,7 @@ and that's why the code is awful in multiple areas.
 ```up A[0] B ``` - Updates array A's pos 0 values with B's</br>
 ```up A[0] B[0] ``` - Updates array A's pos 0 values with arrays B pos 0</br>
 ```up A B[0] ``` - Updates variables A value with array B's value at pos 0</br>
-```while i > t doSomething```- Example of a while loop, you can also use < instead of >. Var i and t must be declared beforehand </br>
+```while i > t doSomething```- Example of a while loop, you can also use <. Var's i and t must be declared beforehand </br>
 ```if i <= t doSomething``` - Evalutes if i <= t, you can also use <,>= and > </br>
 ### Code example ###
 ```
