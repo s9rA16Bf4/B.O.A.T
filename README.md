@@ -4,7 +4,9 @@ I would like to note that this is not by any means a serious project. It's just 
 and that's why the code is awful in multiple areas.
 
 ### Syntaxes ###
-``` int, string``` - Variable declaration</br>
+``` int a 10``` - int variable declaration</br>
+``` string a 10``` - string variable declaration</br>
+``` int a 10 20 30 40``` - int array declaration consisting of 4 elements</br>
 ``` print value``` - Prints value in the terminal, use /variableName if you want to print the value of a variable</br>
 ``` printnl value ``` - Same as print, but adds a newline after each print</br>
 ```A + B``` - Addition of two variables A and B</br>
@@ -17,8 +19,12 @@ and that's why the code is awful in multiple areas.
 ```def funcName whatTheFuncDoes``` - Creates a function with the name funcName, can be used later one by calling upon it.
 </br>
 ``` % text ``` - This is how you represent a comment </br>
-```upd A B ``` - Updates variables A values with B's </br>
-
+```up A B ``` - Updates variables A values with B's</br>
+```up A[0] B ``` - Updates array A's pos 0 values with B's</br>
+```up A[0] B[0] ``` - Updates array A's pos 0 values with arrays B pos 0</br>
+```up A B[0] ``` - Updates variables A value with array B's value at pos 0</br>
+```while i > t doSomething```- Example of a while loop, you can also use < instead of >. Var i and t must be declared beforehand </br>
+```if i <= t doSomething``` - Evalutes if i <= t, you can also use <,>= and > </br>
 ### Code example ###
 ```
 include test.txt % includes variable c
@@ -32,12 +38,13 @@ print /b % 2
 print /a % 3
 print /c % 4
 
-b + c
-print /b % 6
+int floor 0
+int roof 10
 
-int d 2
-a - d
-print /a % 1
+while floor < roof print /floor % 0 1 2 3 4 5 6 7 8 9
+
+int array 10 20 30 40 50
+print value at location array[2]: /array[2] % value at location array[2]: 30
 
 print hello world % prints "hello world"
 print a has the value /a % a has the value 1
