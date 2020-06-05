@@ -25,6 +25,8 @@ and that's why the code is awful in multiple areas.
 ```up A B[0] ``` - Updates variables A value with array B's value at pos 0</br>
 ```while i > t doSomething```- Example of a while loop, you can also use <. Var's i and t must be declared beforehand </br>
 ```if i <= t doSomething``` - Evalutes if i <= t, you can also use <,>= and > </br>
+```in A ``` - Takes an input from the user and saves it in the variabel A </br>
+
 ### Code example ###
 ```
 include test.txt % includes variable c
